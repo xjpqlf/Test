@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bigkoo.pickerview.TimePickerView.OnTimeSelectListener;
 import com.bigkoo.pickerview.TimePickerView.Type;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 	
 	private ArrayList<ProvinceBean> options1Items = new ArrayList<ProvinceBean>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<ArrayList<String>>();
@@ -26,6 +29,7 @@ public class MainActivity extends Activity {
 	private View vMasker;
 	private TimePickerView tpv;
 	private OptionsPickerView pvOptions;
+	private Button bt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class MainActivity extends Activity {
 		
 		tvTime = (TextView) findViewById(R.id.tvTime);
 		tvOptions = (TextView) findViewById(R.id.tvOptions);
-		
+	    bt = (Button) findViewById(R.id.bt);
 		vMasker = findViewById(R.id.vMasker);
 
 		tpv = new TimePickerView(this, Type.YEAR_MONTH_DAY);
@@ -43,6 +47,7 @@ public class MainActivity extends Activity {
 		tpv.setCyclic(false);
 		tpv.setCancelable(true);
 		tpv.setTitle("请选择日期");
+		bt.setOnClickListener(this);
 		
 		tpv.setOnTimeSelectListener(new OnTimeSelectListener() {
 			
@@ -182,5 +187,17 @@ public class MainActivity extends Activity {
 	        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	        return format.format(date);
 	 }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, "这个软件不错啊，可以到ww.caoliu.com 下载");
+		sendIntent.setType("text/plain");
+		startActivity(Intent.createChooser(sendIntent, "分享到"));
+		Toast.makeText(this, "滴滴答的", 0).show();
+
+	}
 	
 }
